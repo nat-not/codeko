@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>💖 My Valentine 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose:       #e8436a;
+    --blush:      #f7a8bb;
+    --petal:      #fce4ec;
+    --cream:      #fff8f9;
+    --wine:       #9c1a3d;
+    --lilac:      #f3d6e4;
+    --gold:       #f5c6d0;
+  }
+
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--cream);
+    font-family: 'Lato', sans-serif;
+    cursor: default;
+  }
+
+  /* ── animated mesh background ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%,  #fdd5e1 0%, transparent 65%),
+      radial-gradient(ellipse 60% 70% at 80% 90%,  #fce0ea 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 55% 45%,  #fff0f4 0%, transparent 60%),
+      linear-gradient(160deg, #fff5f8 0%, #fde8f0 50%, #fce4ec 100%);
+    z-index: -2;
+    animation: bgShift 8s ease-in-out infinite alternate;
+  }
+  @keyframes bgShift {
+    0%   { filter: hue-rotate(0deg)   brightness(1); }
+    100% { filter: hue-rotate(10deg) brightness(1.03); }
+  }
+
+  /* ── floating background hearts ── */
+  #bgHearts { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
+
+  .bg-heart {
+    position: absolute;
+    bottom: -80px;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    font-size: 1.4rem;
+    filter: blur(0.5px);
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0)   rotate(0deg)   scale(1);   opacity: 0; }
+    10%  { opacity: .35; }
+    90%  { opacity: .2; }
+    100% { transform: translateY(-110vh) rotate(30deg) scale(1.15); opacity: 0; }
+  }
+
+  /* ── card shell ── */
+  .card {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+  }
+
+  /* ── decorative top ribbon ── */
+  .ribbon {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--wine), var(--rose), var(--blush), var(--rose), var(--wine));
+    background-size: 200% 100%;
+    animation: shimmer 4s linear infinite;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* ── big beating heart icon ── */
+  .hero-heart {
+    font-size: clamp(4rem, 15vw, 7.5rem);
+    line-height: 1;
+    margin-bottom: .6rem;
+    display: inline-block;
+    animation: heartbeat 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(232,67,106,.45));
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    14%      { transform: scale(1.15); }
+    28%      { transform: scale(1); }
+    42%      { transform: scale(1.08); }
+    70%      { transform: scale(1); }
+  }
+
+  /* ── romantic intro ── */
+  .intro {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1rem, 3.5vw, 1.35rem);
+    color: var(--wine);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp .9s .3s forwards;
+  }
+
+  /* ── main question ── */
+  .question {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 700;
+    color: var(--rose);
+    line-height: 1.2;
+    margin-bottom: 2.5rem;
+    text-shadow: 2px 3px 12px rgba(232,67,106,.18);
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp .9s .55s forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── button row ── */
+  .buttons {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp .9s .8s forwards;
+    position: relative;
+  }
+
+  .btn {
+    position: relative;
+    padding: .9rem 2.4rem;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    letter-spacing: .03em;
+    cursor: pointer;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .18s ease, background .2s ease;
+    outline: none;
+    user-select: none;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--wine) 100%);
+    color: #fff;
+    box-shadow: 0 6px 22px rgba(156,26,61,.35);
+    min-width: 140px;
+  }
+  .btn-yes:hover {
+    transform: translateY(-4px) scale(1.07);
+    box-shadow: 0 12px 32px rgba(156,26,61,.45);
+  }
+  .btn-yes:active { transform: scale(.96); }
+
+  .btn-no {
+    background: #fff;
+    color: var(--rose);
+    border: 2px solid var(--blush);
+    box-shadow: 0 4px 14px rgba(232,67,106,.14);
+    min-width: 130px;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .18s ease,
+                background .2s ease,
+                top .35s cubic-bezier(.34,1.56,.64,1),
+                left .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .btn-no:hover { background: #fff5f7; }
+
+  /* ── pity label (changes on each "No" hover) ── */
+  #noLabel { pointer-events: none; }
+
+  /* ── success overlay ── */
+  #yesOverlay {
+    position: fixed; inset: 0;
+    background: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 50%, #fce4ec 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .6s ease;
+  }
+  #yesOverlay.show { opacity: 1; pointer-events: all; }
+
+  .yes-hearts-row {
+    font-size: 3.5rem;
+    letter-spacing: .3rem;
+    animation: sway 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes sway {
+    from { transform: scale(1) rotate(-4deg); }
+    to   { transform: scale(1.1) rotate(4deg); }
+  }
+
+  .yes-msg {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 8vw, 3.8rem);
+    color: var(--wine);
+    font-weight: 700;
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 1.25;
+  }
+
+  .yes-sub {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1rem, 3vw, 1.35rem);
+    color: var(--rose);
+    max-width: 420px;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+
+  /* ── confetti pieces ── */
+  .confetti-piece {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 200;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(0)    rotate(0deg);   opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── burst hearts on Yes click ── */
+  .burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 150;
+    font-size: 1.6rem;
+    animation: burstOut .8s cubic-bezier(.17,.67,.83,.67) forwards;
+  }
+  @keyframes burstOut {
+    0%   { transform: translate(0, 0) scale(.5); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(1.4); opacity: 0; }
+  }
+
+  /* ── No-click message below question ── */
+  #noMsg {
+    min-height: 1.6rem;
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--rose);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  #noMsg.show { opacity: 1; }
+
+  /* ── little pulsing hearts decoration ── */
+  .deco-hearts {
+    position: absolute;
+    font-size: 1rem;
+    animation: pulse 2s ease-in-out infinite;
+    opacity: .55;
+  }
+  .deco-hearts.tl { top: 18%; left: 5%;  animation-delay: 0s; }
+  .deco-hearts.tr { top: 12%; right: 6%; animation-delay: .5s; }
+  .deco-hearts.bl { bottom: 16%; left: 4%;  animation-delay: 1s; }
+  .deco-hearts.br { bottom: 22%; right: 5%; animation-delay: .7s; }
+  @keyframes pulse {
+    0%,100% { transform: scale(1) rotate(-8deg); opacity: .45; }
+    50%      { transform: scale(1.25) rotate(8deg); opacity: .7; }
+  }
+
+  /* ── separating ornament ── */
+  .ornament {
+    letter-spacing: .6rem;
+    font-size: .85rem;
+    color: var(--blush);
+    margin: .4rem 0 1.2rem;
+    opacity: 0;
+    animation: fadeUp .9s .4s forwards;
+  }
+
+  @media(max-width: 480px) {
+    .btn { padding: .75rem 1.8rem; font-size: 1rem; }
+    .buttons { gap: 1rem; }
+    .deco-hearts { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating background hearts -->
+<div id="bgHearts"></div>
+
+<!-- Yes overlay -->
+<div id="yesOverlay">
+  <div class="yes-hearts-row">💖💗💖💗💖</div>
+  <div class="yes-msg">Yay! You made<br>my heart so happy! 💞</div>
+  <div class="yes-sub">Every moment with you is a love story I never want to end. 🌹</div>
+  <div class="yes-hearts-row" style="animation-delay:.4s">💕💓💕💓💕</div>
+</div>
+
+<!-- Main card -->
+<div class="card">
+  <div class="ribbon"></div>
+
+  <span class="deco-hearts tl">🌸💕🌸</span>
+  <span class="deco-hearts tr">💗🌷💗</span>
+  <span class="deco-hearts bl">💕🌸💕</span>
+  <span class="deco-hearts br">🌹💖🌹</span>
+
+  <div class="hero-heart">💝</div>
+
+  <p class="intro">
+    In a world full of ordinary days,<br>
+    you are my favourite extraordinary thing.
+  </p>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h1 class="question">Will you be my Valentine?</h1>
+
+  <p id="noMsg"></p>
+
+  <div class="buttons" id="btnRow">
+    <button class="btn btn-yes" id="yesBtn" onclick="handleYes(this)">Yes 💖</button>
+    <button class="btn btn-no"  id="noBtn"  onclick="handleNo(this)">No 💔</button>
+  </div>
+</div>
+
+<script>
+/* ─── Background floating hearts ─── */
+(function spawnBgHearts(){
+  const container = document.getElementById('bgHearts');
+  const symbols = ['💗','💕','🌸','🌷','💖','🩷','✿','❤️'];
+  for(let i=0; i<28; i++){
+    const el = document.createElement('span');
+    el.className = 'bg-heart';
+    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    const left     = Math.random()*100;
+    const duration = 8 + Math.random()*16;
+    const delay    = Math.random()*18;
+    const size     = 0.7 + Math.random()*1.2;
+    el.style.cssText = `left:${left}vw;font-size:${size}rem;animation-duration:${duration}s;animation-delay:${delay}s;`;
+    container.appendChild(el);
+  }
+})();
+
+/* ─── NO button escalating pleading ─── */
+const pleas = [
+  "Are you sure? 🥺",
+  "But… but… pleeeease? 💔",
+  "Okay okay, last chance! 😢",
+  "My heart is breaking… 💔💔",
+  "This button is broken, try Yes! 👀",
+  "The answer is definitely Yes 😉",
+  "I believe in you, click Yes! 💪",
+  "You're so close! One more try? 💕",
+  "Pretty please? With a cherry on top 🍒",
+  "I'll wait forever… 🥺💖",
+];
+const noLabels = [
+  "No 💔", "Nope 😶", "Still no 🙄",
+  "Hmm… 🤔", "Really? 😮", "Last no? 😬",
+  "OK fine 😤", "…No 😑", "Not yet? 😿", "Sure? 💭",
+];
+
+let noCount = 0;
+
+function handleNo(btn){
+  noCount++;
+  // Update button label
+  btn.textContent = noLabels[Math.min(noCount, noLabels.length-1)];
+  // Show plea message
+  const msg = document.getElementById('noMsg');
+  msg.textContent = pleas[Math.min(noCount-1, pleas.length-1)];
+  msg.classList.add('show');
+  // Grow the YES button comically
+  const yesBtn = document.getElementById('yesBtn');
+  const scale = Math.min(1 + noCount*0.12, 2.4);
+  yesBtn.style.transform = `scale(${scale})`;
+  yesBtn.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
+  // Fling the NO button to a random spot
+  const btnRow = document.getElementById('btnRow');
+  const rowRect = btnRow.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const maxX = vw - 160, maxY = vh - 80;
+  const newX = Math.floor(Math.random()*maxX);
+  const newY = Math.floor(Math.random()*maxY);
+  btn.style.position = 'fixed';
+  btn.style.left   = newX+'px';
+  btn.style.top    = newY+'px';
+  btn.style.margin = '0';
+  btn.style.zIndex = '50';
+  // Wobble animation
+  btn.animate([
+    {transform:'rotate(0deg)'},
+    {transform:'rotate(-10deg)'},
+    {transform:'rotate(10deg)'},
+    {transform:'rotate(0deg)'},
+  ], {duration:400, easing:'ease-in-out'});
+}
+
+/* ─── YES burst ─── */
+function handleYes(btn){
+  // Burst hearts from button
+  const rect = btn.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top  + rect.height/2;
+  const symbols = ['💖','💗','💕','💓','✨','🌸','🌷'];
+  for(let i=0; i<20; i++){
+    const h = document.createElement('span');
+    h.className = 'burst';
+    h.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    const angle = Math.random()*Math.PI*2;
+    const dist  = 80 + Math.random()*160;
+    h.style.left = cx+'px';
+    h.style.top  = cy+'px';
+    h.style.setProperty('--dx', (Math.cos(angle)*dist)+'px');
+    h.style.setProperty('--dy', (Math.sin(angle)*dist)+'px');
+    h.style.animationDuration = (.5+Math.random()*.5)+'s';
+    document.body.appendChild(h);
+    h.addEventListener('animationend', ()=>h.remove());
+  }
+  // Launch confetti
+  launchConfetti();
+  // Show overlay with slight delay
+  setTimeout(()=>{
+    document.getElementById('yesOverlay').classList.add('show');
+  }, 320);
+}
+
+/* ─── Confetti ─── */
+function launchConfetti(){
+  const colors = ['#e8436a','#f7a8bb','#f5c6d0','#fce4ec','#fff0f4','#9c1a3d','#ffb3c6','#c2185b'];
+  const shapes = ['50%','4px','2px 8px'];
+  for(let i=0; i<140; i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left   = Math.random()*100+'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    const shape = shapes[Math.floor(Math.random()*shapes.length)];
+    c.style.borderRadius = shape;
+    if(shape==='2px 8px'){ c.style.width='4px'; c.style.height='14px'; }
+    const dur = 1.8 + Math.random()*2.5;
+    const delay = Math.random()*1.5;
+    c.style.animationDuration = dur+'s';
+    c.style.animationDelay   = delay+'s';
+    document.body.appendChild(c);
+    c.addEventListener('animationend', ()=>c.remove());
+  }
+}
+
+/* ─── Prevent No button from going off-screen on resize ─── */
+window.addEventListener('resize', ()=>{
+  const btn = document.getElementById('noBtn');
+  if(btn.style.position==='fixed'){
+    const x = parseFloat(btn.style.left);
+    const y = parseFloat(btn.style.top);
+    btn.style.left = Math.min(x, window.innerWidth-130)+'px';
+    btn.style.top  = Math.min(y, window.innerHeight-60)+'px';
+  }
+});
+</script>
+</body>
+</html>
